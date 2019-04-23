@@ -7,7 +7,7 @@ Playbook setting up 18.04/19.04 with i3 and more from minimal installation
     - Maybe you need to run this command on the remote machine: `ln -s /usr/bin/python3 /usr/bin/python`
     - Your ssh public key added to root on the remote machine
 
-![Screenshot](https://github.com/sthorsen/i3-setup/screenshot_i3-setup.png)
+![Screenshot](https://github.com/sthorsen/i3-setup/blob/master/screenshot_i3-setup.png)
 
 Thanks to:
 ==========
