@@ -1,0 +1,13 @@
+---
+src_dir: '/opt'
+
+i3lock_packages:
+  - libxcb-xinerama0-dev
+  - libxcb-dpms0-dev
+  - libxcb-image0-dev
+  - libxcb-xkb-dev
+  - libxkbcommon-x11-dev
+  - libcairo2-dev
+  - libpam0g-dev
+  - libev-dev
+  - libxcb-util-dev

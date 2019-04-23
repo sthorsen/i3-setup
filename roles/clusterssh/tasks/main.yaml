@@ -1,0 +1,37 @@
+---
+# Install clusterssh
+
+- name: Ensure clusterssh is installed
+  apt:
+    name: '{{ item }}'
+    force: yes
+    state: present
+  with_items:
+    - clusterssh
+
+- name: Ensure clusterssh config directory
+  file:
+    path: '/home/{{ user }}/.clusterssh'
+    state: directory
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Ensure clusterssh config
+  copy:
+    src: '{{ item }}'
+    dest: '/home/{{ user }}/.clusterssh/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+  with_fileglob:
+   - clusterssh/*
+
+
+- name: insert/update clusterssh after #BLOCK
+  blockinfile:
+    path: '/home/{{ user }}/.i3/config'
+    marker: "## {mark} CLUSTERSSH ANSIBLE MANAGED BLOCK ##"
+    insertafter: "#clusterssh"
+    content: |
+      for_window [title="CSSH"] floating enable

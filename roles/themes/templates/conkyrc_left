@@ -1,0 +1,99 @@
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
+conky.config = {
+	background = true,
+	use_xft = true,
+	xftfont = 'Font Awesome 5 Free:style=Solid:size=8',
+	xftalpha = 0.1,
+	update_interval = 1,
+	total_run_times = 0,
+	own_window_transparent = true,
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	double_buffer = true,
+	minimum_size = 350,
+	maximum_width = 350,
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	draw_graph_borders = true,
+	default_color = 'white',
+	default_shade_color = 'red',
+	default_outline_color = 'red',
+	alignment = 'top_left',
+	gap_x = 30,
+	gap_y = 30,
+	no_buffers = false,
+	uppercase = false,
+	cpu_avg_samples = 2,
+	net_avg_samples = 2,
+	diskio_avg_samples = 2,
+	override_utf8_locale = true,
+	text_buffer_size = 256,
+	own_window = true,
+	own_window_class = 'conky',
+	own_window_type = 'override',
+	temperature_unit = 'celsius',
+	format_human_readable = true,
+	font = 'Font Awesome 5 Free:style:Solid:size=8',
+	show_graph_scale = true,
+	show_graph_range = false,
+
+	color0 = '#CCCCCC', -- gray
+	color1 = '#D71700', -- red
+	color2 = '#FFFFFF', -- white
+	color3 = '#000000', -- black
+	color4 = '#01b500', -- green
+}
+
+conky.text = [[
+
+${font size=15}${color1}${nodename} $alignr${font size=15}${color0}{{ ansible_distribution }} ${font openlogos:size=20}u
+
+${voffset -120}
+${color white}
+${font}                                                                                                                            
+${font style:Bold:size=10}${color1}SYSTEM ${color0}${hr 2}
+${font style:Solid:size=8}${color0}${sysname} ${kernel} ${alignr} ${machine}
+${font style:Solid:size=8}${color0}Uptime ${alignr}${uptime}
+${font style:Solid:size=8}${color0}File System ${alignr}${fs_type /}
+
+${font style:Bold:size=10}${color1}PROCESSORS ${color0}${hr 2}
+{% for core in range(1, ansible_processor_cores+1) %}
+${font style:Solid:size=8}${color0}Core {{ core-1 }} ${alignr}${cpu cpu{{ core }} }% ${alignr}${cpubar cpu{{ core }} 5,220 } ${alignr}${freq_g cpu{{ core }} }Ghz
+{% endfor %}
+
+${font style:Bold:size=10}${color1}CPU ${color0}${hr 2}
+${font style:Bold:size=8}${color1}Usage: \
+${font style:Solid:size=8}${color0}${cpu 0}%
+${font style:Solid:size=8}${color0}${cpugraph 32,350 CCCCCC D71700 -t}
+${font style:Bold:size=8}${color1}Load: \
+${font style:Solid:size=8}${color0}${loadavg}
+${font style:Solid:size=8}${color0}${loadgraph 32,350 CCCCCC D71700 -t}
+#
+${font style:Bold:size=10}${color1}MEMORY ${color0}${hr 2}
+${font style:Solid:size=8}${color0}${alignc} ${mem} / ${memmax} ${alignr} ${memperc}%
+${font style:Solid:size=8}${color0}${membar}
+
+${font style:Bold:size=10}${color1}DISK ${color0}${hr 2}
+${font style:Bold:size=8}${color1}Usage: \
+${font style:Solid:size=8}${color0}${alignc} ${fs_used /} / ${fs_size /} ${alignr} ${fs_free_perc /}%
+${font style:Solid:size=8}${color0}${fs_bar /}
+#
+${font style:Bold:size=8}${color1}Read: ${alignr 130}Write: 
+${font style=Solid:size=8}${color0}${diskiograph_read 32,170 CCCCCC D71700 -t} \
+${font style=Solid:size=8}${color0}${alignr}${diskiograph_write 32,170 CCCCCC D71700 -t}
+#
+
+${font style:Bold:size=10}${color1}TOP {{ top_procs }} PROCESSES ${color0}${hr 2}
+${font style:Bold:size=8}${color1}Name ${alignr 10 }CPU% ${alignr}MEM%
+${font style:Solid:size=8}${color0}${hr 1}
+${font style:Solid:size=8}${color0}${top name 1} ${alignr 20 }${top cpu 1} ${alignr}${top mem 1}
+${font style:Solid:size=8}${color0}${top name 2} ${alignr 20 }${top cpu 2} ${alignr}${top mem 2}
+${font style:Solid:size=8}${color0}${top name 3} ${alignr 20 }${top cpu 3} ${alignr}${top mem 3}
+${font style:Solid:size=8}${color0}${top name 4} ${alignr 20 }${top cpu 4} ${alignr}${top mem 4}
+${font style:Solid:size=8}${color0}${top name 5} ${alignr 20 }${top cpu 5} ${alignr}${top mem 5}
+${font style:Solid:size=8}${color0}${top name 6} ${alignr 20 }${top cpu 6} ${alignr}${top mem 6}
+${font style:Solid:size=8}${color0}${top name 7} ${alignr 20 }${top cpu 7} ${alignr}${top mem 7}
+${font style:Solid:size=8}${color0}${top name 8} ${alignr 20 }${top cpu 8} ${alignr}${top mem 8}
+${font style:Solid:size=8}${color0}${top name 9} ${alignr 20 }${top cpu 9} ${alignr}${top mem 9}
+${font style:Solid:size=8}${color0}${top name 10} ${alignr 20 }${top cpu 10} ${alignr}${top mem 10}
+]]

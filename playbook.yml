@@ -1,0 +1,23 @@
+---
+- name: Setup init, dm, i3, i3lock, themes, utilities, clusterssh, google-chrome, nvidia-driver, docker-ce, power-management, grub and cleanup
+  hosts:
+    - 192.168.2.242
+    - 192.168.2.243
+    - 192.168.2.220
+  become: yes
+  vars_files:
+    - vars/defaults.yml
+  roles:
+    - init
+    - dm
+    - i3
+    - i3lock
+    - themes
+    - utilities
+    - clusterssh
+    - google-chrome
+    - nvidia-driver
+    - docker-ce
+    - power-management
+    - grub
+    - cleanup

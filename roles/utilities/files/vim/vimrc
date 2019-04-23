@@ -1,0 +1,16 @@
+set bg=light
+
+
+
+" Set line numbers.
+	set number
+
+" Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
+	set splitbelow splitright
+
+" Copy selected text to system clipboard (requires gvim/nvim/vim-x11 installed):
+	vnoremap <C-c> "+y
+	map <C-p> "+P
+
+" Automatically deletes all trailing whitespace on save.
+"	autocmd BufWritePre * %s/\s\+$//e

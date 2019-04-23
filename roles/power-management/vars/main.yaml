@@ -1,0 +1,8 @@
+---
+power_packages:
+  - tp-smapi-dkms
+  - acpi-call-dkms
+  - tlp
+  - linux-tools-generic
+  - smartmontools
+  - powertop

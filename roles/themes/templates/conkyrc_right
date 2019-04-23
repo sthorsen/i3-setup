@@ -1,0 +1,83 @@
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
+conky.config = {
+	background = true,
+	use_xft = true,
+	xftfont = 'Font Awesome 5 Free:style=Solid:size=8',
+	xftalpha = 0.1,
+	update_interval = 1,
+	total_run_times = 0,
+	own_window_transparent = true,
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	double_buffer = true,
+	minimum_size = 350,
+	maximum_width = 350,
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	draw_graph_borders = true,
+	default_color = 'white',
+	default_shade_color = 'red',
+	default_outline_color = 'red',
+	alignment = 'top_right',
+	gap_x = 30,
+	gap_y = 30,
+	no_buffers = false,
+	uppercase = false,
+	cpu_avg_samples = 2,
+	net_avg_samples = 2,
+	diskio_avg_samples = 2,
+	override_utf8_locale = true,
+	text_buffer_size = 256,
+	own_window = true,
+	own_window_class = 'conky',
+	own_window_type = 'override',
+	temperature_unit = 'celsius',
+	format_human_readable = true,
+	font = 'Font Awesome 5 Free:style:Solid:size=8',
+	show_graph_scale = true,
+	show_graph_range = false,
+
+	color0 = '#CCCCCC', -- gray
+	color1 = '#D71700', -- red
+	color2 = '#FFFFFF', -- white
+	color3 = '#000000', -- black
+	color4 = '#01b500', -- green
+}
+
+conky.text = [[
+
+${voffset 6}
+${font}                                                                                                                            
+${font style:Bold:size=10}${color1}NETWORK STATS ${color0}${hr 2}
+${font style:Solid:size=8}${color0}IP on {{ ansible_default_ipv4.interface }} ${alignr}${addr {{ ansible_default_ipv4.interface }}}
+${font style:Solid:size=8}${color0}Down ${alignr}${downspeed {{ ansible_default_ipv4.interface }}}
+${font style:Solid:size=8}${color0}Up ${alignr}${upspeed {{ ansible_default_ipv4.interface }}}
+${font style:Solid:size=8}${color0}Downloaded ${alignr}${totaldown {{ ansible_default_ipv4.interface }}}
+${font style:Solid:size=8}${color0}Uploaded ${alignr}${totalup {{ ansible_default_ipv4.interface }}}
+${font style:Solid:size=8}${color0}${hr 1}
+#
+${font style:Bold:size=8}${color1}Download: ${alignr 125}Upload:
+${font style:Solid:size=8}${color0}${downspeedgraph {{ ansible_default_ipv4.interface }} 32,170 CCCCCC D71700 -t} \
+${font style:Solid:size=8}${color0}${alignr}${upspeedgraph {{ ansible_default_ipv4.interface }} 32,170 CCCCCC D71700 -t}
+#
+${font style:Bold:size=10}${color1}PORTS AND CONNECTIONS ${color0}${hr 2}
+${font style:Solid:size=8}${color0}Inbound: ${tcp_portmon 1 32767 count} \
+${font style:Solid:size=8}${color0}${alignc}Outbound: ${tcp_portmon 32768 61000 count} \
+${font style:Solid:size=8}${color0}${alignr}ALL: ${tcp_portmon 1 65535 count}
+
+${font style:Bold:size=8}${color1}Inbound Connections ${alignr} Local Service/Port$color
+${font style:Bold:size=8}${color0}${hr 1}
+${font style:Solid:size=8}${color0}${tcp_portmon 1 32767 rhost 0} ${alignr} ${tcp_portmon 1 32767 lservice 0}
+${font style:Solid:size=8}${color0}${tcp_portmon 1 32767 rhost 1} ${alignr} ${tcp_portmon 1 32767 lservice 1}
+${font style:Solid:size=8}${color0}${tcp_portmon 1 32767 rhost 2} ${alignr} ${tcp_portmon 1 32767 lservice 2}
+${font style:Solid:size=8}${color0}${tcp_portmon 1 32767 rhost 3} ${alignr} ${tcp_portmon 1 32767 lservice 3}
+${font style:Solid:size=8}${color0}${tcp_portmon 1 32767 rhost 4} ${alignr} ${tcp_portmon 1 32767 lservice 4}
+
+${font style:Bold:size=8}${color1}Outbound Connections ${alignr} Remote Service/Port$color
+${font style:Bold:size=8}${color0}${hr 1}
+${font style:Solid:size=8}${color0}${tcp_portmon 32768 61000 rhost 0} ${alignr} ${tcp_portmon 32768 61000 rservice 0}
+${font style:Solid:size=8}${color0}${tcp_portmon 32768 61000 rhost 1} ${alignr} ${tcp_portmon 32768 61000 rservice 1}
+${font style:Solid:size=8}${color0}${tcp_portmon 32768 61000 rhost 2} ${alignr} ${tcp_portmon 32768 61000 rservice 2}
+${font style:Solid:size=8}${color0}${tcp_portmon 32768 61000 rhost 3} ${alignr} ${tcp_portmon 32768 61000 rservice 3}
+${font style:Solid:size=8}${color0}${tcp_portmon 32768 61000 rhost 4} ${alignr} ${tcp_portmon 32768 61000 rservice 4}
+]]

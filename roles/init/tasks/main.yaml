@@ -1,0 +1,70 @@
+---
+# Init
+
+- name: APT update
+  command: apt update
+
+- name: APT install libxft-dev
+  apt:
+    name: libxft-dev
+    force: yes
+    state: present
+
+- name: APT install git
+  apt:
+    name: git
+    force: yes
+    state: present
+
+- name: "Create user {{ user }}"
+  user:
+    state: present
+    name: '{{ user }}'
+    append: yes
+    group: '{{ user }}'
+    groups:
+      - dip
+      - sudo
+      - plugdev
+      - lpadmin
+    create_home: yes
+    home: '/home/{{ user }}'
+    password: '{{ user_password }}'
+    update_password: on_create
+    shell: /bin/bash
+
+- name: Ensure .ssh directory for user {{ user }}
+  file:
+    path: '/home/{{ user }}/.ssh'
+    recurse: yes
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+    state: directory
+
+- name: Ensure ssh key
+  copy:
+    src: '{{ item }}'
+    dest: '/home/{{ user }}/.ssh/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '600'
+  with_fileglob:
+   - '{{ src_ssh_private_key }}'
+   - '{{ src_ssh_public_key }}'
+   - '{{ src_ssh_known_hosts }}'
+
+- name: Clone Simple Terminal repository from Luke Smith xyz
+  git:
+    repo: git@github.com:LukeSmithxyz/st.git
+    dest: '{{ src_dir }}/st'
+    clone: yes
+    accept_hostkey: yes
+    key_file: '/home/{{ user }}/.ssh/id_rsa'
+  when: terminal == "st"
+
+- name: Compile Simple Terminal
+  make:
+    chdir: '/{{ src_dir }}/st'
+    target: install
+  when: terminal == "st"

@@ -1,0 +1,19 @@
+---
+src_dir: /opt
+top_procs: 10
+theme_packages:
+  - lightdm-gtk-greeter
+  - numix-gtk-theme
+  - numix-icon-theme
+  - fonts-roboto
+  - fonts-powerline
+  - compton
+  - conky
+  - jq
+  - python-netifaces
+  - update-notifier-common
+  - python-docker
+  - python3-docker
+  - python-pygit2
+  - python3-pygit2
+  - lm-sensors

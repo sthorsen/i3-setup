@@ -1,0 +1,12 @@
+---
+- name: Remove quiet splash from grub
+  lineinfile:
+    dest: /etc/default/grub
+    regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT=""'
+  register: grubfile
+
+- name: Update grub
+  command: update-grub
+  when: grubfile.changed
+

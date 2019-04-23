@@ -1,0 +1,33 @@
+---
+# Install additional utilities and extensions for i3.
+
+- name: Ensure packages
+  apt:
+    name: '{{ item }}'
+    force: yes
+    state: present
+  with_items:
+    - '{{ util_packages }}'
+
+- name: Ensure network packages
+  apt:
+    name: '{{ item }}'
+    force: yes
+    state: present
+  with_items:
+    - '{{ network_packages }}'
+
+- name: Ensure required Python libraries
+  pip:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - '{{ util_python_libs }}'
+
+- name: Ensure .vimrc config file
+  copy:
+    src: 'vim/vimrc'
+    dest: '/home/{{ user }}/.vimrc'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '600'

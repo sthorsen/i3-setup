@@ -1,0 +1,36 @@
+---
+# Install i3-wm
+
+- name: Ensure i3 is installed
+  apt:
+    name: '{{ item }}'
+    force: yes
+    state: present
+  with_items:
+    - '{{ i3_packages }}'
+
+- name: Ensure autostart files
+  copy:
+    src: '{{ item }}'
+    dest: '/home/{{ user }}/.config/autostart/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+  with_fileglob:
+    - autostart/*
+
+- name: Ensure i3 config directory
+  file:
+    path: '/home/{{ user }}/.i3'
+    state: directory
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Ensure i3 config from template
+  template:
+    src: 'config'
+    dest: '/home/{{ user }}/.i3/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '644'

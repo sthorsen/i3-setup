@@ -1,0 +1,132 @@
+---
+# Clean up and remove unwanted software
+
+- name: "Remove thunderbird software"
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  with_items:
+    - thunderbird
+    - thunderbird-gnome-support
+
+- name: "Remove modemmanager"
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  with_items:
+    - modemmanager
+    - libmbim-glib4
+    - libmbim-proxy
+    - libqmi-glib5
+    - libqmi-proxy
+    - usb-modeswitch
+    - usb-modeswitch-data
+
+- name: "Remove postfix"
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  with_items:
+    - postfix
+    - guile-2.0-libs
+    - libgc1c2
+    - libgsasl7
+    - libkyotocabinet16v5
+    - libmailutils5
+    - libntlm0
+    - mailutils-common
+    - mailutils
+
+- name: "Remove gnome"
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  with_items:
+    - gnome-*
+    - at-spi2-core
+    - pinentry-gnome3
+    - libgcr-ui-3-1
+    - gcr
+    - libgoa-1.0-common
+    - gvfs-backends
+    - libgdata22
+    - libgoa-1.0-0b
+    - bluez-obexd
+    - libavahi-glib1
+    - libcdio-cdda2
+    - libcdio-paranoia2
+    - libcdio17
+    - libgdata-common
+    - libical3
+    - libimobiledevice6
+    - liboauth0
+    - libplist3
+    - libusbmuxd4
+    - usbmuxd
+    - libgail18
+    - libgail-common
+    - language-pack-gnome-en-base
+    - language-pack-gnome-en
+    - iio-sensor-proxy
+    - aptdaemon
+    - at-spi2-core
+    - bluez
+    - cracklib-runtime
+    - cups-pk-helper
+    - geoclue-2.0
+    - ibus
+    - im-config
+    - indicator-applet
+    - indicator-datetime
+    - indicator-messages
+    - indicator-power
+    - indicator-sound
+    - ippusbxd
+    - libnss-myhostname:amd64
+    - libpwquality-common
+    - lintian
+    - network-manager-gnome
+    - packagekit
+    - policykit-1-gnome
+    - python3-cupshelpers
+    - ssl-cert
+    - system-config-printer
+    - system-config-printer-common
+    - ubuntu-system-service
+    - upower
+    - whoopsie-preferences
+    - zeitgeist-core
+    - libtext-iconv-perl
+    - emacsen-common
+    - libaspell15
+    - aspell
+    - aspell-en
+    - debconf-i18n
+    - dictionaries-common
+    - ubuntu-minimal
+    - wbritish
+    - apg
+    - mdadm
+# dpkg -l | grep -i rc | awk '{print $1 " " $2}' | grep -v ii | awk '{print $2}'
+
+- name: "Remove packages that are no longer required"
+  apt:
+    autoremove: yes
+
+- name: "Remove useless packages from the cache"
+  apt:
+    autoclean: yes
+
+- name: APT clean
+  command: apt clean
+
+- name: Ensure user libvirt-qemu will not appiere in login screen
+  copy:
+    dest: "/var/lib/AccountsService/users/libvirt-qemu"
+    content: |
+      [User]
+      SystemAccount=true

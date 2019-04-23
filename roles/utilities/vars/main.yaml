@@ -1,0 +1,62 @@
+---
+# Utilities BEGIN #
+util_packages:
+  - aptitude
+  - libqt5svg5
+  - python-dev
+  - build-essential
+  - python-pip
+  - dmenu
+  - feh
+  - dtrx
+  - fasd
+  - rofi
+  - lxappearance
+  - gtk-chtheme
+  - qt4-qtconfig
+  - j4-dmenu-desktop
+  - vim
+  - vim-gtk3
+  - tmux
+  - iotop
+  - vlc
+  - htop
+  - php-cli
+  - golang
+  - pavucontrol
+  - virtualbox
+  - virt-manager
+  - npm
+  - whois
+  - pwgen
+  - php-curl
+  - screen
+  - default-jdk
+  - beep
+  - minicom
+  - lrzsz
+  - sysstat
+  - gimp
+  - dia
+
+network_packages:
+  - nmap
+  - openvpn
+  - iftop
+  - net-tools
+  - curl
+  - wget
+
+util_python_libs:
+  - pathlib
+  - psutil
+  - thefuck
+  - i3-py
+  - quickswitch-i3
+  - py3status
+  - cheat
+  - docker-py
+  - pygit2
+
+# Utilities END #
+

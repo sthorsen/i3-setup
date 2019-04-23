@@ -1,0 +1,10 @@
+---
+i3_packages:
+  - i3-wm
+  - scrot
+  - udiskie
+  - numlockx
+  - acpi
+  - xautolock
+  - xbacklight
+  - imagemagick

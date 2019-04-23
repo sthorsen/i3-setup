@@ -1,0 +1,238 @@
+---
+# Install and setup the i3 and lightdm theme.
+
+- name: Ensure packages
+  apt:
+    name: '{{ item }}'
+    force: yes
+    state: present
+  with_items:
+    - '{{ theme_packages }}'
+
+- name: Ensure autostart
+  copy:
+    src: '{{ item }}'
+    dest: '/home/{{ user }}/.config/autostart/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '644'
+  with_fileglob:
+    - autostart/*
+
+- name: Ensure conky config directory
+  file:
+    path: '/home/{{ user }}/.conky'
+    state: directory
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Ensure conky left config from template
+  template:
+    src: 'conkyrc_left'
+    dest: '/home/{{ user }}/.conky/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Ensure conky right config from template
+  template:
+    src: 'conkyrc_right'
+    dest: '/home/{{ user }}/.conky/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Ensure conky manage script
+  template:
+    src: 'manage_conky.sh'
+    dest: '/home/{{ user }}/i3_scripts/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Ensure compton config
+  copy:
+    src: 'compton/compton.conf'
+    dest: '/home/{{ user }}/.compton.conf'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Set lightdm greeter
+  lineinfile:
+    dest: '/etc/lightdm/lightdm-gtk-greeter.conf'
+    line: '[greeter]'
+
+- name: Set lightdm theme
+  lineinfile:
+    dest: '/etc/lightdm/lightdm-gtk-greeter.conf'
+    regexp: "^theme-name.*"
+    line: 'theme-name=Numix'
+    insertafter: "[greeter]"
+    state: present
+
+- name: Set lightdm icon theme
+  lineinfile:
+    dest: '/etc/lightdm/lightdm-gtk-greeter.conf'
+    regexp: "^icon-theme-name.*"
+    line: 'icon-theme-name=Numix'
+    insertafter: "[greeter]"
+    state: present
+
+- name: Set lightdm background
+  lineinfile:
+    dest: '/etc/lightdm/lightdm-gtk-greeter.conf'
+    regexp: "^background.*"
+    line: 'background={{ background_dir }}/{{ background }}'
+    insertafter: "[greeter]"
+    state: present
+
+- name: Disable lightdm user background
+  lineinfile:
+    dest: '/etc/lightdm/lightdm-gtk-greeter.conf'
+    regexp: "^user-background.*"
+    line: 'user-background = false'
+    insertafter: "[greeter]"
+    state: present
+
+- name: Clone awesome-terminal-fonts repository
+  git:
+    repo: git@github.com:gabrielelana/awesome-terminal-fonts.git
+    dest: '{{ src_dir }}/awesome-terminal-fonts'
+    clone: yes
+    accept_hostkey: yes
+    key_file: '/home/{{ user }}/.ssh/id_rsa'
+
+- name: Ensure fonts
+  copy:
+    src: '{{ item }}'
+    dest: '/home/{{ user }}/.fonts/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '644'
+  with_fileglob:
+    - fonts/*
+
+- name: Ensure fontconfig directory
+  file:
+    path: '/home/{{ user }}/.config/fontconfig/conf.d'
+    state: directory
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: 'Executing command {{ src_dir }}/awesome-terminal-fonts/install.sh'
+  become: yes
+  become_user: '{{ user }}'
+  shell: /bin/bash install.sh
+  args:
+    chdir: '{{ src_dir }}/awesome-terminal-fonts'
+
+- name: Set permissions for fonts
+  file:
+    path: '/home/{{ user }}/.fonts'
+    recurse: yes
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Clone bumblebee-status repository
+  git:
+    repo: git@github.com:sthorsen/bumblebee-status.git
+    dest: '{{ src_dir }}/bumblebee-status'
+    clone: yes
+    accept_hostkey: yes
+    key_file: '/home/{{ user }}/.ssh/id_rsa'
+
+- name: insert/update bar after #bar
+  blockinfile:
+    path: '/home/{{ user }}/.i3/config'
+    marker: "## {mark} BAR ANSIBLE MANAGED BLOCK ##"
+    insertafter: "#bar"
+    content: |
+      bar {
+        position top
+        # nvidiagpu \ Needs to be added
+        # prime \ Maybe look at this
+        # sensors or sensors2 \ need to get working
+        status_command /opt/bumblebee-status/bumblebee-status \
+        --modules \
+          docker_ps \
+          nic \
+          disk \
+          cpu \
+          memory \
+          date \
+          time \
+          pasink \
+          battery \
+          bluetooth \
+          brightness \
+          xrandr \
+          indicator \
+          apt \
+          git \
+        --autohide \
+          apt \
+          indicator \
+        --parameters \
+          cpu.format="{:05.02f}%" \
+          memory.format="{percent:05.02f}%" \
+          disk.format="{percent:05.02f}%" \
+          date.format="%a, %b %d CW %V" \
+          time.format="%H:%M:%S" \
+          indicator.signalstype="critical" \
+        --theme \
+          solarized-powerline
+      }
+
+- name: Set permissions for config
+  file:
+    path: '/home/{{ user }}/.config'
+    recurse: yes
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Ensure background directory
+  file:
+    path: '{{ background_dir }}'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+    state: directory
+
+- name: Ensure background images 
+  copy:
+    src: '{{ item }}'
+    dest: '{{ background_dir }}/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '644'
+  with_fileglob:
+    - backgrounds/*
+
+- name: Clone xcwd repository
+  git:
+    repo: git@github.com:schischi/xcwd.git
+    dest: '{{ src_dir }}/xcwd'
+    clone: yes
+    accept_hostkey: yes
+    key_file: '/home/{{ user }}/.ssh/id_rsa'
+  when: ansible_distribution_version == "18.04"
+
+- name: Compile xcwd
+  make:
+    chdir: '/{{ src_dir }}/xcwd'
+    target: install
+  when: ansible_distribution_version == "18.04"
+
+- name: Ensure xcwd package
+  apt:
+    name: '{{ item }}'
+    force: yes
+    state: present
+  with_items:
+    - xcwd
+  when: ansible_distribution_version == "19.04"

@@ -1,0 +1,71 @@
+---
+# Install i3-wm
+
+- name: Ensure i3lock required packages are installed
+  apt:
+    name: '{{ item }}'
+    force: yes
+    state: present
+  with_items:
+    - '{{ i3lock_packages }}'
+
+- name: Clone i3lock repository
+  git:
+    repo: git@github.com:Atrus7/i3lock.git
+    dest: '{{ src_dir }}/i3lock'
+    clone: yes
+    accept_hostkey: yes
+    key_file: '/home/{{ user }}/.ssh/id_rsa'
+
+- name: Compile i3lock
+  make:
+    chdir: '{{ src_dir }}/i3lock'
+    target: install
+
+- name: Ensure i3 scripts directory
+  file:
+    path: '/home/{{ user }}/i3_scripts'
+    state: directory
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: Ensure i3 scripts from template
+  template:
+    src: 'lock_screen.sh'
+    dest: '/home/{{ user }}/i3_scripts/'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+
+- name: insert/update i3lock after #lock screen
+  blockinfile:
+    path: '/home/{{ user }}/.i3/config'
+    marker: "## {mark} I3LOCK ANSIBLE MANAGED BLOCK ##"
+    insertafter: "#lock screen"
+    content: |
+      bindsym Control+Mod1+l exec "~/i3_scripts/lock_screen.sh"
+      # auto lock screen after 10 minutes
+      exec --no-startup-id xautolock -corners 0-0- -time 10 -locker '~/i3_scripts/lock_screen.sh' &
+      # auto off screen after 10 minutes
+      #exec --no-startup-id xset dpms 0 0 600
+
+- name: Ensure emoji directory
+  file:
+    path: '{{ i3lock_emoji_dir }}'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '744'
+    state: directory
+  when: src_i3lock_emoji_dir != ""
+
+- name: Ensure emoji images 
+  copy:
+    src: '{{ item }}'
+    dest: '{{ i3lock_emoji_dir }}'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: '644'
+  with_fileglob:
+    - '{{ src_i3lock_emoji_dir }}/*'
+  when: src_i3lock_emoji_dir != ""

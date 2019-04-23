@@ -1,0 +1,40 @@
+---
+# Install docker
+- name: "Does the Docker apt file exist?"
+  command: test -f {{docker_apt_file}}
+  register: docker_apt_exists
+  ignore_errors: True
+
+- name: "APT - Add Docker GPG key"
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  when: docker_apt_exists.rc == 1
+
+- name: "APT - Add Docker repository"
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+    state: present
+    filename: docker
+  when: docker_apt_exists.rc == 1
+
+- name: "APT - install docker-ce and misc packages"
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - software-properties-common
+    - docker-ce
+  when: docker_apt_exists.rc == 1
+
+- name: Adding docker users (for use without sudo)
+  user:
+    name: "{{ item }}"
+    append: yes
+    groups: docker
+  become: true
+  with_items:
+    -  '{{ user }}'
+  when: docker_apt_exists.rc == 1
