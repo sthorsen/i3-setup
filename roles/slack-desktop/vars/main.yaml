@@ -1,0 +1,3 @@
+---
+slack_desktop_apt_file: /etc/apt/sources.list.d/slack.list
+

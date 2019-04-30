@@ -16,6 +16,7 @@
     - utilities
     - clusterssh
     - google-chrome
+    - slack-desktop
     - nvidia-driver
     - docker-ce
     - power-management

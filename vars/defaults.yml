@@ -2,7 +2,7 @@ user: st
 user_password: "$6$nGP4TbGC.PT5Qyq$x81F0KR4ikY0cR7JfHlY2ZH6rYd/2ElOHu1g4cS7iTDaxhm.hyreR1N.aRcnVV.4jQy0gYr0HH5WPVJzv5WIp1" #pass: `hello123` #package: `whois` #command: `mkpasswd --method=sha-512`
 
 src_dir: '/opt'
-background_dir: '/{{ src_dir }}/backgrounds'
+background_dir: '{{ src_dir }}/backgrounds'
 background: '4k.jpg'
 
 #terminal: 'i3-sensible-terminal'

@@ -21,19 +21,20 @@ Thanks to:
 
 Playbook roles: (Listed in install order)
 ===============
-- [init](https://gitlab.com/thorsen/LenovoX1#init)
-- [dm](https://gitlab.com/thorsen/LenovoX1#dm)
-- [i3](https://gitlab.com/thorsen/LenovoX1#i3)
-- [i3lock](https://gitlab.com/thorsen/LenovoX1#i3lock)
-- [themes](https://gitlab.com/thorsen/LenovoX1#themes)
-- [utilities](https://gitlab.com/thorsen/LenovoX1#utilities)
-- [clusterssh](https://gitlab.com/thorsen/LenovoX1#clusterssh)
-- [google-chrome](https://gitlab.com/thorsen/LenovoX1#google-chrome)
-- [nvidia-driver](https://gitlab.com/thorsen/LenovoX1#nvidia-driver)
-- [docker-ce](https://gitlab.com/thorsen/LenovoX1#docker-ce)
-- [power-management](https://gitlab.com/thorsen/LenovoX1#power-management)
-- [grub](https://gitlab.com/thorsen/LenovoX1#grub)
-- [cleanup](https://gitlab.com/thorsen/LenovoX1#cleanup)
+- [init](https://github.com/sthorsen/i3-setup#init)
+- [dm](https://github.com/sthorsen/i3-setup#dm)
+- [i3](https://github.com/sthorsen/i3-setup#i3)
+- [i3lock](https://github.com/sthorsen/i3-setup#i3lock)
+- [themes](https://github.com/sthorsen/i3-setup#themes)
+- [utilities](https://github.com/sthorsen/i3-setup#utilities)
+- [clusterssh](https://github.com/sthorsen/i3-setup#clusterssh)
+- [google-chrome](https://github.com/sthorsen/i3-setup#google-chrome)
+- [slack-desktop](https://github.com/sthorsen/i3-setup#slack-desktop)
+- [nvidia-driver](https://github.com/sthorsen/i3-setup#nvidia-driver)
+- [docker-ce](https://github.com/sthorsen/i3-setup#docker-ce)
+- [power-management](https://github.com/sthorsen/i3-setup#power-management)
+- [grub](https://github.com/sthorsen/i3-setup#grub)
+- [cleanup](https://github.com/sthorsen/i3-setup#cleanup)
 
 
 init
@@ -118,6 +119,14 @@ google-chrome
 - Tasks
     - Adding google apt source
     - installing google-chrome-stable package
+
+slack-desktop
+-------------
+- Requirements
+    - X11
+- Tasks
+    - Adding slack apt source
+    - installing slack-desktop package
 
 nvidia-driver
 -------------
