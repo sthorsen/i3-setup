@@ -47,6 +47,7 @@ init
     - Deploing ssh keys
     - Install som required packages
     - Clone and compile ST (Simple Terminal) from Luke Smith if `terminal` is set to `st` in `var/default.yaml`
+    - Detect if VM and installing guest tools
 
 dm
 ---
