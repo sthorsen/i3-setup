@@ -68,3 +68,36 @@
     chdir: '/{{ src_dir }}/st'
     target: install
   when: terminal == "st"
+
+- name: Ensure VMware guest packages is installed
+  apt:
+    name: '{{ item }}'
+    force: yes
+    state: present
+  with_items:
+    - open-vm-tools
+  notify:
+    - start open-vm-tools
+  when:
+    - ansible_virtualization_type == 'VMware'
+
+- name: Ensure virtualbox guest packages is installed
+  apt:
+    name: '{{ item }}'
+    force: yes
+    state: present
+  with_items:
+    - virtualbox-guest-x11
+    - virtualbox-guest-utils
+    - virtualbox-guest-dkms
+  notify:
+    - start virtualbox-guest-utils
+  when:
+    - ansible_virtualization_type == 'virtualbox'
+
+- name: Virtual guest detected. Ensure mdadm package is absent
+  apt:
+    name: mdadm
+    state: absent
+  when:
+    - ansible_virtualization_role == 'guest'
