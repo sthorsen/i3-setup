@@ -110,8 +110,6 @@
     - ubuntu-minimal
     - wbritish
     - apg
-    - mdadm
-# dpkg -l | grep -i rc | awk '{print $1 " " $2}' | grep -v ii | awk '{print $2}'
 
 - name: "Remove packages that are no longer required"
   apt:
