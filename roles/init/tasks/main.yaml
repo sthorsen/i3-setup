@@ -56,7 +56,7 @@
 
 - name: Clone Simple Terminal repository from Luke Smith xyz
   git:
-    repo: git@github.com:LukeSmithxyz/st.git
+    repo: git@github.com:sthorsen/st.git
     dest: '{{ src_dir }}/st'
     clone: yes
     accept_hostkey: yes
