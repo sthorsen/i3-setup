@@ -1,0 +1,11 @@
+---
+
+- name: start open-vm-tools
+  service: 
+    name: open-vm-tools
+    state: started
+
+- name: start virtualbox-guest-utils
+  service:
+    name: virtualbox-guest-utils
+    state: started
